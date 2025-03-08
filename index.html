@@ -1592,6 +1592,17 @@
         $("#gjs").append($(".ad-cont"));
       });
 
+      // Replace the existing window.editor = editor; line with this more robust approach
+      document.addEventListener("DOMContentLoaded", function () {
+        // Make sure editor is defined and accessible globally
+        if (typeof editor !== "undefined") {
+          window.editor = editor; // Use a different name to avoid potential conflicts
+          console.log("GrapesJS editor is now available as window.editor");
+        } else {
+          console.error("GrapesJS editor is not defined");
+        }
+      });
+
       (function (i, s, o, g, r, a, m) {
         i["GoogleAnalyticsObject"] = r;
         (i[r] =
