@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="./stylesheets/toastr.min.css" />
     <link rel="stylesheet" href="stylesheets/grapes.min.css?v0.21.10" />
     <link rel="stylesheet" href="stylesheets/grapesjs-preset-webpage.min.css" />
-    <link rel="stylesheet" href="stylesheets/tooltip.css" />
     <link rel="stylesheet" href="stylesheets/demos.css?v3" />
     <link
       href="https://unpkg.com/grapick/dist/grapick.min.css"
@@ -21,17 +20,12 @@
     <script src="js/toastr.min.js"></script>
     <script src="js/grapes.min.js?v0.21.10"></script>
     <script src="https://unpkg.com/grapesjs-preset-webpage@1.0.2"></script>
-    <script src="https://unpkg.com/grapesjs-blocks-basic@1.0.1"></script>
-    <script src="https://unpkg.com/grapesjs-plugin-forms@2.0.5"></script>
-    <script src="https://unpkg.com/grapesjs-component-countdown@1.0.1"></script>
     <script src="https://unpkg.com/grapesjs-plugin-export@1.0.11"></script>
-    <script src="https://unpkg.com/grapesjs-tabs@1.0.6"></script>
     <script src="https://unpkg.com/grapesjs-touch@0.1.1"></script>
     <script src="https://unpkg.com/grapesjs-parser-postcss@1.0.1"></script>
-    <script src="https://unpkg.com/grapesjs-tooltip@0.1.7"></script>
     <script src="https://unpkg.com/grapesjs-tui-image-editor@0.1.3"></script>
     <script src="https://unpkg.com/grapesjs-style-bg@2.0.1"></script>
-
+    <script src="js/grapesjs-plugin-carousel.min.js"></script>
     <style type="text/css">
       .icons-flex {
         background-size: 70% 65% !important;
@@ -398,6 +392,9 @@
       </footer>
 
       <style>
+        .gjs-clm-tags {
+          display: none !important;
+        }
         .clearfix {
           clear: both;
         }
@@ -1055,330 +1052,26 @@
         container: "#gjs",
         fromElement: true,
         showOffsets: true,
+        traitManager: {
+          appendTo: document.createElement("div"),
+        },
         assetManager: {
           embedAsBase64: true,
           assets: images,
         },
         selectorManager: { componentFirst: true },
         styleManager: {
-          sectors: [
-            {
-              name: "General",
-              properties: [
-                {
-                  extend: "float",
-                  type: "radio",
-                  default: "none",
-                  options: [
-                    { value: "none", className: "fa fa-times" },
-                    { value: "left", className: "fa fa-align-left" },
-                    { value: "right", className: "fa fa-align-right" },
-                  ],
-                },
-                "display",
-                { extend: "position", type: "select" },
-                "top",
-                "right",
-                "left",
-                "bottom",
-              ],
-            },
-            {
-              name: "Dimension",
-              open: false,
-              properties: [
-                "width",
-                {
-                  id: "flex-width",
-                  type: "integer",
-                  name: "Width",
-                  units: ["px", "%"],
-                  property: "flex-basis",
-                  toRequire: 1,
-                },
-                "height",
-                "max-width",
-                "min-height",
-                "margin",
-                "padding",
-              ],
-            },
-            {
-              name: "Typography",
-              open: false,
-              properties: [
-                "font-family",
-                "font-size",
-                "font-weight",
-                "letter-spacing",
-                "color",
-                "line-height",
-                {
-                  extend: "text-align",
-                  options: [
-                    {
-                      id: "left",
-                      label: "Left",
-                      className: "fa fa-align-left",
-                    },
-                    {
-                      id: "center",
-                      label: "Center",
-                      className: "fa fa-align-center",
-                    },
-                    {
-                      id: "right",
-                      label: "Right",
-                      className: "fa fa-align-right",
-                    },
-                    {
-                      id: "justify",
-                      label: "Justify",
-                      className: "fa fa-align-justify",
-                    },
-                  ],
-                },
-                {
-                  property: "text-decoration",
-                  type: "radio",
-                  default: "none",
-                  options: [
-                    { id: "none", label: "None", className: "fa fa-times" },
-                    {
-                      id: "underline",
-                      label: "underline",
-                      className: "fa fa-underline",
-                    },
-                    {
-                      id: "line-through",
-                      label: "Line-through",
-                      className: "fa fa-strikethrough",
-                    },
-                  ],
-                },
-                "text-shadow",
-              ],
-            },
-            {
-              name: "Decorations",
-              open: false,
-              properties: [
-                "opacity",
-                "border-radius",
-                "border",
-                "box-shadow",
-                "background", // { id: 'background-bg', property: 'background', type: 'bg' }
-              ],
-            },
-            {
-              name: "Extra",
-              open: false,
-              buildProps: ["transition", "perspective", "transform"],
-            },
-            {
-              name: "Flex",
-              open: false,
-              properties: [
-                {
-                  name: "Flex Container",
-                  property: "display",
-                  type: "select",
-                  defaults: "block",
-                  list: [
-                    { value: "block", name: "Disable" },
-                    { value: "flex", name: "Enable" },
-                  ],
-                },
-                {
-                  name: "Flex Parent",
-                  property: "label-parent-flex",
-                  type: "integer",
-                },
-                {
-                  name: "Direction",
-                  property: "flex-direction",
-                  type: "radio",
-                  defaults: "row",
-                  list: [
-                    {
-                      value: "row",
-                      name: "Row",
-                      className: "icons-flex icon-dir-row",
-                      title: "Row",
-                    },
-                    {
-                      value: "row-reverse",
-                      name: "Row reverse",
-                      className: "icons-flex icon-dir-row-rev",
-                      title: "Row reverse",
-                    },
-                    {
-                      value: "column",
-                      name: "Column",
-                      title: "Column",
-                      className: "icons-flex icon-dir-col",
-                    },
-                    {
-                      value: "column-reverse",
-                      name: "Column reverse",
-                      title: "Column reverse",
-                      className: "icons-flex icon-dir-col-rev",
-                    },
-                  ],
-                },
-                {
-                  name: "Justify",
-                  property: "justify-content",
-                  type: "radio",
-                  defaults: "flex-start",
-                  list: [
-                    {
-                      value: "flex-start",
-                      className: "icons-flex icon-just-start",
-                      title: "Start",
-                    },
-                    {
-                      value: "flex-end",
-                      title: "End",
-                      className: "icons-flex icon-just-end",
-                    },
-                    {
-                      value: "space-between",
-                      title: "Space between",
-                      className: "icons-flex icon-just-sp-bet",
-                    },
-                    {
-                      value: "space-around",
-                      title: "Space around",
-                      className: "icons-flex icon-just-sp-ar",
-                    },
-                    {
-                      value: "center",
-                      title: "Center",
-                      className: "icons-flex icon-just-sp-cent",
-                    },
-                  ],
-                },
-                {
-                  name: "Align",
-                  property: "align-items",
-                  type: "radio",
-                  defaults: "center",
-                  list: [
-                    {
-                      value: "flex-start",
-                      title: "Start",
-                      className: "icons-flex icon-al-start",
-                    },
-                    {
-                      value: "flex-end",
-                      title: "End",
-                      className: "icons-flex icon-al-end",
-                    },
-                    {
-                      value: "stretch",
-                      title: "Stretch",
-                      className: "icons-flex icon-al-str",
-                    },
-                    {
-                      value: "center",
-                      title: "Center",
-                      className: "icons-flex icon-al-center",
-                    },
-                  ],
-                },
-                {
-                  name: "Flex Children",
-                  property: "label-parent-flex",
-                  type: "integer",
-                },
-                {
-                  name: "Order",
-                  property: "order",
-                  type: "integer",
-                  defaults: 0,
-                  min: 0,
-                },
-                {
-                  name: "Flex",
-                  property: "flex",
-                  type: "composite",
-                  properties: [
-                    {
-                      name: "Grow",
-                      property: "flex-grow",
-                      type: "integer",
-                      defaults: 0,
-                      min: 0,
-                    },
-                    {
-                      name: "Shrink",
-                      property: "flex-shrink",
-                      type: "integer",
-                      defaults: 0,
-                      min: 0,
-                    },
-                    {
-                      name: "Basis",
-                      property: "flex-basis",
-                      type: "integer",
-                      units: ["px", "%", ""],
-                      unit: "",
-                      defaults: "auto",
-                    },
-                  ],
-                },
-                {
-                  name: "Align",
-                  property: "align-self",
-                  type: "radio",
-                  defaults: "auto",
-                  list: [
-                    {
-                      value: "auto",
-                      name: "Auto",
-                    },
-                    {
-                      value: "flex-start",
-                      title: "Start",
-                      className: "icons-flex icon-al-start",
-                    },
-                    {
-                      value: "flex-end",
-                      title: "End",
-                      className: "icons-flex icon-al-end",
-                    },
-                    {
-                      value: "stretch",
-                      title: "Stretch",
-                      className: "icons-flex icon-al-str",
-                    },
-                    {
-                      value: "center",
-                      title: "Center",
-                      className: "icons-flex icon-al-center",
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
+          appendTo: document.createElement("div"),
         },
         plugins: [
-          "gjs-blocks-basic",
-          "grapesjs-plugin-forms",
-          "grapesjs-component-countdown",
           "grapesjs-plugin-export",
-          "grapesjs-tabs",
           "grapesjs-touch",
           "grapesjs-parser-postcss",
-          "grapesjs-tooltip",
           "grapesjs-tui-image-editor",
           "grapesjs-style-bg",
           "grapesjs-preset-webpage",
         ],
         pluginsOpts: {
-          "gjs-blocks-basic": { flexGrid: true },
           "grapesjs-tui-image-editor": {
             script: [
               // 'https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7/fabric.min.js',
@@ -1390,9 +1083,6 @@
               "https://uicdn.toast.com/tui-color-picker/v2.2.7/tui-color-picker.min.css",
               "https://uicdn.toast.com/tui-image-editor/v3.15.2/tui-image-editor.min.css",
             ],
-          },
-          "grapesjs-tabs": {
-            tabsBlock: { category: "Extra" },
           },
           "grapesjs-preset-webpage": {
             modalImportTitle: "Import Template",
@@ -1489,14 +1179,13 @@
         ["canvas-clear", "Clear canvas"],
       ].forEach(function (item) {
         pn.getButton("options", item[0]).set("attributes", {
-          title: item[1],
+          title: item[1],s
           "data-tooltip-pos": "bottom",
         });
       });
       [
         ["open-sm", "Style Manager"],
         ["open-layers", "Layers"],
-        ["open-blocks", "Blocks"],
       ].forEach(function (item) {
         pn.getButton("views", item[0]).set("attributes", {
           title: item[1],
@@ -1526,6 +1215,30 @@
       editor.on("load", function () {
         var $ = grapesjs.$;
 
+        editor.on("component:selected", () => {
+          console.log("selecting component");
+          const selected = editor.getSelected();
+          if (selected) {
+            selected.set("copyable", true);
+            selected.set("draggable", true);
+            selected.set("removable", true);
+            selected.set("editable", true);
+          }
+        });
+        editor.on("block:selected", () => {
+          console.log("selecting block");
+          const selected = editor.getSelected();
+          if (selected) {
+            selected.set("copyable", true);
+            selected.set("draggable", true);
+            selected.set("removable", true);
+            selected.set("editable", true);
+          }
+        });
+        // Make Layers panel always active
+        var openLayers = pn.getButton("views", "open-layers");
+        openLayers.set("active", 1);
+
         // Show borders by default
         pn.getButton("options", "sw-visibility").set({
           command: "core:component-outline",
@@ -1540,10 +1253,8 @@
         logoPanel.appendChild(logoCont);
 
         // Load and show settings and style manager
-        var openTmBtn = pn.getButton("views", "open-tm");
-        openTmBtn && openTmBtn.set("active", 1);
-        var openSm = pn.getButton("views", "open-sm");
-        openSm && openSm.set("active", 1);
+        var openTmBtn = pn.removeButton("views", "open-blocks");
+        var openSm = pn.removeButton("views", "open-sm");
 
         // Remove trait view
         pn.removeButton("views", "open-tm");
@@ -1568,8 +1279,15 @@
         });
 
         // Open block manager
-        var openBlocksBtn = editor.Panels.getButton("views", "open-blocks");
-        openBlocksBtn && openBlocksBtn.set("active", 1);
+        pn.removeButton("views", "open-blocks");
+        pn.removeButton("views", "open-sm");
+
+        editor
+          .getComponents()
+          .forEach((component) =>
+            component.setAttribute("data-remove-button", "false")
+          );
+        // openBlocksBtn && openBlocksBtn.set("active", 0);
       });
 
       // Make editor available in browser dev tools
